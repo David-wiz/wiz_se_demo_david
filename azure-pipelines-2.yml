@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: CmdLine@2
+  inputs:
+    script: |
+      curl -o wizcli https://wizcli.app.wiz.io/wizcli
+      chmod +x wizcli
+      ./wizcli auth --id $(WIZ_ID) --secret $(WIZ_SECRET)
+      ./wizcli docker scan --image nginx:latest
+- task: UniversalPackages@0
+  inputs:
+    command: 'publish'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    feedsToUsePublish: 'internal'
+    vstsFeedPublish: '58a02e12-5552-4fe8-8597-c57f0140c9ba'
+    vstsFeedPackagePublish: 'auth.json'
+    versionOption: 'patch'
