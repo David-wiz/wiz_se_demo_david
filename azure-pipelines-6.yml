@@ -26,6 +26,5 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      /usr/bin/./wizcli iac scan --policy "test policy david"
-      /usr/bin/./wizcli iac scan --path "$SCAN_PATH"
+      /usr/bin/./wizcli iac scan --path "$SCAN_PATH" --policy "test policy david"
   displayName: Scan IaC with WizCLI
